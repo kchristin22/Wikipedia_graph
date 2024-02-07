@@ -1,5 +1,7 @@
 import sys
+import os
 import wiki_graph
+from torch.multiprocessing import set_start_method
 
 # print(cosine_similarity.item().__round__(3))
 
@@ -30,4 +32,14 @@ if __name__ == '__main__':
     if len(sys.argv) == 1:
         print("Usage is: python3 ./main.py <subject> <correlation limit> <tree depth>")
         exit()
+
+    # Set TOKENIZERS_PARALLELISM to 'true'
+    os.environ['TOKENIZERS_PARALLELISM'] = 'true'
+
+    try:
+        set_start_method('spawn')
+    except RuntimeError as error:
+        print("Error message:", error)
+        pass
+
     main(sys.argv[1:])  # don't pass the program call to the main function
