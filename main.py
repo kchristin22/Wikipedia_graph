@@ -17,7 +17,7 @@ def main(argv):
             break
         except ValueError:
             subject += argv[i] + " "
-    subject += "\b"  # delete the last space
+    subject = subject[:-1]  # don't store the last space
     print("Searching in wikipedia for: " + subject)
     if subject == '' or float(argv[cor_index]) < 0 or float(argv[cor_index]) >= 1 or argv[cor_index + 1].isdigit() == 0 \
             or int(argv[cor_index + 1]) < 1:
