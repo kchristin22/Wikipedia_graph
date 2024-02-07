@@ -3,9 +3,8 @@ import networkx as netx
 import pandas as pd
 from sentence_transformers import SentenceTransformer, util
 from dataclasses import dataclass
-# from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor, wait, Future
-from torch.multiprocessing import Manager, Process, Pool
-from typing import List
+from torch.multiprocessing import Manager, Process, Pool, active_children
+from time import sleep
 
 
 @dataclass
@@ -26,32 +25,33 @@ def find_child(args):
         # print("Trying for: ", parent_link)
         try:
             child_sum = wiki.summary(parent_link, auto_suggest=False)
+            sleep(1.5)
             child_subject = parent_link
         except wiki.exceptions.DisambiguationError as e:
-            print(e.options)
+            # print(e.options)
             if any(parent_link.split()[0] in i for i in e.options):
                 split_parts = parent_link.split()
                 # keep all splits except the parenthesis
                 gen_subject = ' '.join(
                     split_parts[:next((i for i, part in enumerate(split_parts) if part.startswith('(')), len(split_parts))])
 
-                print("After splits: ", gen_subject)
+                # print("After splits: ", gen_subject)
 
                 child_subject = next((option for option in e.options if gen_subject in option), None)
-                print("After next:", child_subject)
+                # print("After next:", child_subject)
             else:
-                print("Didn't find: ", parent_link)
+                # print("Didn't find: ", parent_link)
                 # it has been shown that this occurs with numbers
                 child_subject = next((option for option in e.options if int(parent_link.split()[0]) in option), None)
-                # child_subject = e.options[e.options.index(int(parent_link.split()[0]))]
-                # change to index
             try:
                 child_sum = wiki.summary(child_subject, auto_suggest=False)
+                sleep(1.5)
             except wiki.exceptions.PageError:
                 continue
         except wiki.exceptions.PageError:
             continue
         child_page = wiki.page(child_subject, auto_suggest=False)
+        sleep(1.5)
         sums = [parent.summary, child_sum]
         sum_embeddings = model.encode(sums)
         correlation = util.pytorch_cos_sim(sum_embeddings[0], sum_embeddings[1])
@@ -70,7 +70,7 @@ def tree_scan(graph_edges, parent: SubjectInfo, cor_limit, depth: int, tree_dept
 
     print("here")
     args = list(zip([parent]*len(parent.page.links), parent.page.links, [cor_limit]*len(parent.page.links), [model]*len(parent.page.links)))
-    num_processes = executor._processes
+    num_processes = executor._processes  # minus active workers
     # Partition the args into chunks for each process
     chunk_size = len(args) // num_processes
     arg_chunks = [args[i:i + chunk_size] for i in range(0, len(args), chunk_size)]
@@ -81,9 +81,9 @@ def tree_scan(graph_edges, parent: SubjectInfo, cor_limit, depth: int, tree_dept
     for child_node in child_nodes:
         if child_node is None:
             continue
-
+            print(child_node)
             # add_node and add weighted edge
-            local_edges.append((parent.subject, child_subject, correlation.item()))
+            graph_edges.append((parent.subject, child_subject, correlation.item()))
             # graph.add_weighted_edges_from([(parent.subject, child_subject, correlation.item())])
             print("(" + str(parent.subject) + ", " + str(child_subject) + ", " + str(correlation.item()) + ")")
             if depth < tree_depth and parent_node_already_exists(graph_edges, child_subject) == 0:

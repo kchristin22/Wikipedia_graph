@@ -3,6 +3,7 @@ import os
 import wiki_graph
 from torch.multiprocessing import set_start_method
 
+
 # print(cosine_similarity.item().__round__(3))
 
 
