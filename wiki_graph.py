@@ -108,4 +108,97 @@ def wiki_graph(subject: str, cor_limit, tree_depth: int):
 
     graph.add_weighted_edges_from(graph_edges)
     netx.write_gexf(graph, "wiki_graph_output.gexf")
-    del graph_edges, graph
+
+    del graph_edges
+    return graph
+
+
+def find_important_edges(graph, subject: str, tree_depth: int):
+    all_children = []
+    cur_depth_nodes = [[] for _ in range(tree_depth + 1)]
+    cur_depth_nodes[0].append(subject)
+    for depth in range(tree_depth):
+        for node in cur_depth_nodes[depth]:
+
+            cur_depth_nodes[depth + 1].extend([i for i in graph.successors(node)])
+
+            if node == subject:
+                cur_children = graph.edges.data("weight",
+                                                nbunch=node)  # return 3-tuples of edge source, edge destination and weight
+                all_children.extend(cur_children)
+                continue
+
+            # if parent is not the root, we need to calculate the new weight of its children
+            # based on its connection to the root
+
+            # find parent node included in the previous depth
+            cur_parent = [i for i in cur_depth_nodes[depth - 1] if i in graph.predecessors(node)]  # list
+            this_node_weight = graph.edges[cur_parent[0], node]["weight"]  # this node's weight in regard to root
+
+            for successor in graph.successors(node):
+                this_successor_weight = graph.edges[node, successor]["weight"]
+                # scale weight of this successor
+                all_children.append([node, successor, this_successor_weight * this_node_weight])
+
+    return all_children
+
+
+def analyze_graph(graph, subject: str, tree_depth: int):
+
+    graph_dict = {}
+
+    # Approximations and Heuristics
+    avg_cluster = netx.average_clustering(graph)
+    graph_dict["avg_clustering"] = avg_cluster
+    print("average clustering: ", avg_cluster)
+
+    # Centrality
+    centrality = netx.degree_centrality(graph)
+    graph_dict["degree centrality"] = centrality
+    sorted_values = sorted(graph_dict["degree centrality"].items(), key=lambda x: x[1], reverse=True)
+    print("Top 5 central nodes based on their degree: ", sorted_values[:5])
+
+    in_centrality = netx.in_degree_centrality(graph)
+    graph_dict["in degree centrality"] = in_centrality
+    sorted_values = sorted(graph_dict["in degree centrality"].items(), key=lambda x: x[1], reverse=True)
+    print("Top 5 central nodes based on their in degree: ", sorted_values[:5])
+
+    out_centrality = netx.out_degree_centrality(graph)
+    graph_dict["out degree centrality"] = out_centrality
+    sorted_values = sorted(graph_dict["out degree centrality"].items(), key=lambda x: x[1], reverse=True)
+    print("Top 5 central nodes based on their out degree: ", sorted_values[:5])
+
+    eigenvector_centr = netx.eigenvector_centrality_numpy(graph)
+    graph_dict["eigenvector centrality"] = eigenvector_centr
+    sorted_values = sorted(graph_dict["eigenvector centrality"].items(), key=lambda x: x[1], reverse=True)
+    print("Top 5 central nodes based on the eigenvectors: ", sorted_values[:5])
+
+    voterank = netx.voterank(graph)
+    graph_dict["voterank influential nodes"] = voterank
+    print("influential nodes derived by VoteRank: ", voterank)
+
+    # Components
+    num_strongly_con = netx.number_strongly_connected_components(graph)
+    graph_dict["num of strongly connected components"] = num_strongly_con
+    print("number of strongly connected components: ", num_strongly_con)
+
+    # Cycles
+    try:
+        center_cycles = netx.find_cycle(graph, subject, orientation="original")
+    except netx.NetworkXNoCycle:
+        print("No cycle found")
+
+    # Link Analysis
+    pagerank = netx.pagerank(graph)
+    graph_dict["pagerank influential nodes"] = pagerank
+    sorted_values = sorted(graph_dict["pagerank influential nodes"].items(), key=lambda x: x[1], reverse=True)
+    print("Top 5 most influential nodes based on PageRank: ", sorted_values[:5])
+
+    # Edge analysis
+    out_edges = find_important_edges(graph, subject, tree_depth)
+    sorted_values = sorted(out_edges, key=lambda x: x[2], reverse=True)
+    print("Top 5 edges with the highest weights: ", sorted_values[:5])
+
+    return graph_dict
+
+
