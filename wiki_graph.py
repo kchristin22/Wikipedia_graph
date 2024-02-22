@@ -1,9 +1,8 @@
 import wikipedia as wiki
 import networkx as netx
-import pandas as pd
 from sentence_transformers import SentenceTransformer, util
 from dataclasses import dataclass
-from torch.multiprocessing import Manager, Pool
+from torch.multiprocessing import Pool
 from typing import List
 import itertools
 from time import sleep
@@ -68,7 +67,7 @@ def tree_scan(graph_edges, parent: SubjectInfo, cor_limit, depth: int, tree_dept
     arg_chunks = [args[i:i + chunk_size] for i in range(0, len(args), chunk_size)]
 
     child_nodes = executor.map(find_child, arg_chunks)
-    child_nodes = list(itertools.chain.from_iterable(child_nodes))
+    child_nodes = list(itertools.chain.from_iterable(child_nodes))  # remove separation of each process' list
 
     for child_node in child_nodes:
         if not child_node:
@@ -107,7 +106,7 @@ def wiki_graph(subject: str, cor_limit, tree_depth: int):
     executor.join()
 
     graph.add_weighted_edges_from(graph_edges)
-    netx.write_gexf(graph, "wiki_graph_output.gexf")
+    netx.write_gexf(graph, subject + "_graph_output.gexf")
 
     del graph_edges
     return graph
@@ -149,7 +148,7 @@ def analyze_graph(graph, subject: str, tree_depth: int):
 
     # Approximations and Heuristics
     avg_cluster = netx.average_clustering(graph)
-    graph_dict["avg_clustering"] = avg_cluster
+    graph_dict["avg clustering"] = avg_cluster
     print("average clustering: ", avg_cluster)
 
     # Centrality
@@ -185,8 +184,11 @@ def analyze_graph(graph, subject: str, tree_depth: int):
     # Cycles
     try:
         center_cycles = netx.find_cycle(graph, subject, orientation="original")
+        graph_dict["main theme cycles"] = list(center_cycles)
+        print("Found edges forming cycle(s) that include the main theme: ", list(center_cycles))
     except netx.NetworkXNoCycle:
         print("No cycle found")
+        graph_dict["main theme cycles"] = []
 
     # Link Analysis
     pagerank = netx.pagerank(graph)
@@ -196,6 +198,7 @@ def analyze_graph(graph, subject: str, tree_depth: int):
 
     # Edge analysis
     out_edges = find_important_edges(graph, subject, tree_depth)
+    graph_dict["all nodes correlation with the main theme"] = out_edges
     sorted_values = sorted(out_edges, key=lambda x: x[2], reverse=True)
     print("Top 5 edges with the highest weights: ", sorted_values[:5])
 
