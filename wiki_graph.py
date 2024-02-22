@@ -112,7 +112,7 @@ def wiki_graph(subject: str, cor_limit, tree_depth: int):
     executor.join()
 
     graph.add_weighted_edges_from(graph_edges)
-    netx.write_gexf(graph, subject + "_graph_output.gexf")
+    netx.write_gexf(graph, subject + str(cor_limit) + str(tree_depth) + "_graph_output.gexf")
 
     del graph_edges
     return graph
