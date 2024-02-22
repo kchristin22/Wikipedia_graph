@@ -91,6 +91,10 @@ def wiki_graph(subject: str, cor_limit, tree_depth: int):
     try:
         orig_sum = wiki.summary(subject)
         page = wiki.page(subject)
+        page_title = wiki.page(subject).title
+        if page_title != subject:  # avoid having duplicates of the root node afterwards
+            subject = page_title
+            print("Subject changed to " + subject)
     except wiki.DisambiguationError as e:
         subject = e.options[0]
         print("Subject changed to " + subject)
