@@ -36,6 +36,8 @@ def find_child(args):
                     split_parts[:next((i for i, part in enumerate(split_parts) if part.startswith('(')), len(split_parts))])
 
                 child_subject = next((option for option in e.options if gen_subject in option), None)
+                if child_subject is None:
+                    child_subject = e.options[0]  # if the exact title is not found choose the first option
             else:
                 # it has been shown that this occurs with numbers
                 child_subject = next((option for option in e.options if int(parent_link.split()[0]) in option), None)

@@ -28,8 +28,8 @@ def main(argv):
         exit()
     G = wiki_graph.netx.DiGraph([(0, 1), (1, 2), (2, 0), (2, 3), (4, 5), (3, 4), (5, 6), (6, 3), (6, 7)])
     print("scc: ", wiki_graph.netx.number_strongly_connected_components(G))
-    # graph = wiki_graph.wiki_graph(subject, float(argv[cor_index]), int(argv[cor_index + 1]))
-    graph = wiki_graph.netx.read_gexf("wiki_graph_output.gexf")
+    graph = wiki_graph.wiki_graph(subject, float(argv[cor_index]), int(argv[cor_index + 1]))
+    # graph = wiki_graph.netx.read_gexf("wiki_graph_output.gexf")
     dictionary = wiki_graph.analyze_graph(graph, subject, int(argv[cor_index + 1]))
 
     del graph, dictionary
