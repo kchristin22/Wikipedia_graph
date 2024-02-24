@@ -75,6 +75,21 @@ def tree_scan(graph_edges, parent: SubjectInfo, cor_limit, depth: int, tree_dept
     for child_node in child_nodes:
         if not child_node:
             continue
+        # check if the child topic exists as a parent with a different casing or in plural
+        lowercase_first_column = [edge[0].lower() for edge in graph_edges]
+        found_index = next(
+            (index for index, value in enumerate(lowercase_first_column) if child_node.subject.lower() in value), -1)
+        if found_index != -1:
+            child_node.subject = graph_edges[found_index][0]
+        else:
+            found_index = next(
+                (index for index, value in enumerate(lowercase_first_column) if value in child_node.subject.lower()),
+                -1)  # check if this child is the plural form of a parent
+            if found_index != -1:
+                child_node.subject = graph_edges[found_index][0]
+        # check if this combination is already included in the edges:
+        if (parent.subject, child_node.subject, child_node.cor) in graph_edges:
+            continue
         # add_node and add weighted edge
         graph_edges.append((parent.subject, child_node.subject, child_node.cor))
         print("(" + str(parent.subject) + ", " + str(child_node.subject) + ", " + str(child_node.cor) + ")")
