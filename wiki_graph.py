@@ -34,10 +34,11 @@ def find_child(args):
                 # keep all splits except the parenthesis
                 gen_subject = ' '.join(
                     split_parts[:next((i for i, part in enumerate(split_parts) if part.startswith('(')), len(split_parts))])
-
-                child_subject = next((option for option in e.options if gen_subject in option), None)
-                if child_subject is None:
-                    child_subject = e.options[0]  # if the exact title is not found choose the first option
+                child_index = next(((option, i) for i, option in enumerate(e.options) if f'{gen_subject} ' in option), (None, 0))  # match the exact words in options or choose the first one
+                print("child_index: ", child_index)
+                while "(disambiguation)" in e.options[child_index]:  # avoid disambiguation error again
+                    child_index = child_index + 1
+                child_subject = e.options[child_index]
             else:
                 # it has been shown that this occurs with numbers
                 child_subject = next((option for option in e.options if int(parent_link.split()[0]) in option), None)
