@@ -24,8 +24,8 @@ def main(argv):
         # isdigit() returns false if tree depth is decimal
         print("Usage is: python3 ./main.py <subject: string> <correlation limit: float> <tree depth: int>")
         exit()
-    # graph = wiki_graph.wiki_graph(subject, float(argv[cor_index]), int(argv[cor_index + 1]))
-    graph = wiki_graph.netx.read_gexf(subject+ '_' + str(argv[cor_index]) + '_' + str(argv[cor_index + 1]) + "_graph_output.gexf")
+    graph = wiki_graph.wiki_graph(subject, float(argv[cor_index]), int(argv[cor_index + 1]))
+    # graph = wiki_graph.netx.read_gexf(subject + '_' + str(argv[cor_index]) + '_' + str(argv[cor_index + 1]) + "_graph_output.gexf")
     dictionary = wiki_graph.analyze_graph(graph, subject, int(argv[cor_index + 1]))
     with open("metrics_dictionary.json", "w") as fp:
         json.dump(dictionary, fp)  # encode dict into JSON

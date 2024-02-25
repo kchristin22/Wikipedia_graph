@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0e79adf5-2ad6-4084-8bbc-9e400b1084ed" name="Changes" comment="Minor clean up and improvements">
+    <list default="true" id="0e79adf5-2ad6-4084-8bbc-9e400b1084ed" name="Changes" comment="Avoid duplicates of edges due to self loops in edge analysis">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wiki_graph.py" beforeDir="false" afterPath="$PROJECT_DIR$/wiki_graph.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -88,7 +87,7 @@
       <workItem from="1708428739730" duration="10268000" />
       <workItem from="1708601351818" duration="3337000" />
       <workItem from="1708610711500" duration="6170000" />
-      <workItem from="1708689635550" duration="21733000" />
+      <workItem from="1708689635550" duration="22489000" />
     </task>
     <task id="LOCAL-00001" summary="Various improvements and clean-up">
       <created>1708611284808</created>
@@ -139,7 +138,14 @@
       <option name="project" value="LOCAL" />
       <updated>1708775622002</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Avoid duplicates of edges due to self loops in edge analysis">
+      <created>1708896646091</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1708896646091</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -152,7 +158,8 @@
     <MESSAGE value="Avoid disambiguation exception occurring for a second time in the row" />
     <MESSAGE value="Avoid duplicates of node subjects and edges" />
     <MESSAGE value="Minor clean up and improvements" />
-    <option name="LAST_COMMIT_MESSAGE" value="Minor clean up and improvements" />
+    <MESSAGE value="Avoid duplicates of edges due to self loops in edge analysis" />
+    <option name="LAST_COMMIT_MESSAGE" value="Avoid duplicates of edges due to self loops in edge analysis" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Wikipedia_graph$main.coverage" NAME="main Coverage Results" MODIFIED="1707323727556" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

@@ -199,21 +199,12 @@ def analyze_graph(graph, subject: str, tree_depth: int):
 
     voterank = netx.voterank(graph)
     graph_dict["voterank influential nodes"] = voterank
-    print("influential nodes derived by VoteRank: ", voterank)
+    print("influential nodes derived by VoteRank: ", voterank[:5])
 
     # Components
     num_strongly_con = netx.number_strongly_connected_components(graph)
     graph_dict["num of strongly connected components"] = num_strongly_con
     print("number of strongly connected components: ", num_strongly_con)
-
-    # Cycles
-    try:
-        center_cycles = netx.find_cycle(graph, subject, orientation="original")
-        graph_dict["main theme cycles"] = list(center_cycles)
-        print("Found edges forming cycle(s) that include the main theme: ", list(center_cycles))
-    except netx.NetworkXNoCycle:
-        print("No cycle found")
-        graph_dict["main theme cycles"] = []
 
     # Link Analysis
     pagerank = netx.pagerank(graph)
