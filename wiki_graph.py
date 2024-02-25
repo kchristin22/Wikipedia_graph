@@ -143,6 +143,9 @@ def find_important_edges(graph, subject: str, tree_depth: int):
 
             cur_depth_nodes[depth + 1].extend([i for i in graph.successors(node)])
 
+            if any(tup for tup in all_children if node == tup[0]):  # avoid duplicates of edges due to self loops
+                continue
+
             if node == subject:
                 cur_children = graph.edges.data("weight",
                                                 nbunch=node)  # return 3-tuples of edge source, edge destination and weight
@@ -159,7 +162,7 @@ def find_important_edges(graph, subject: str, tree_depth: int):
             for successor in graph.successors(node):
                 this_successor_weight = graph.edges[node, successor]["weight"]
                 # scale weight of this successor
-                all_children.append([node, successor, this_successor_weight * this_node_weight])
+                all_children.append([subject, successor, this_successor_weight * this_node_weight])
 
     return all_children
 

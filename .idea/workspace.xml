@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0e79adf5-2ad6-4084-8bbc-9e400b1084ed" name="Changes" comment="Add precaution for main subject node future duplicates">
+    <list default="true" id="0e79adf5-2ad6-4084-8bbc-9e400b1084ed" name="Changes" comment="Minor clean up and improvements">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/wiki_graph.py" beforeDir="false" afterPath="$PROJECT_DIR$/wiki_graph.py" afterDir="false" />
@@ -88,7 +88,7 @@
       <workItem from="1708428739730" duration="10268000" />
       <workItem from="1708601351818" duration="3337000" />
       <workItem from="1708610711500" duration="6170000" />
-      <workItem from="1708689635550" duration="13280000" />
+      <workItem from="1708689635550" duration="21733000" />
     </task>
     <task id="LOCAL-00001" summary="Various improvements and clean-up">
       <created>1708611284808</created>
@@ -111,7 +111,35 @@
       <option name="project" value="LOCAL" />
       <updated>1708625896859</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Avoid disambiguation exception occurring for a second time in the row">
+      <created>1708775526183</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1708775526183</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Avoid duplicates of node subjects and edges">
+      <created>1708775564322</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1708775564322</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Minor clean up and improvements">
+      <created>1708775598208</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1708775598208</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Minor clean up and improvements">
+      <created>1708775622002</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1708775622002</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -121,7 +149,10 @@
     <MESSAGE value="Various improvements and clean-up" />
     <MESSAGE value="Add precaution for parent link not being found as is in the options" />
     <MESSAGE value="Add precaution for main subject node future duplicates" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add precaution for main subject node future duplicates" />
+    <MESSAGE value="Avoid disambiguation exception occurring for a second time in the row" />
+    <MESSAGE value="Avoid duplicates of node subjects and edges" />
+    <MESSAGE value="Minor clean up and improvements" />
+    <option name="LAST_COMMIT_MESSAGE" value="Minor clean up and improvements" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Wikipedia_graph$main.coverage" NAME="main Coverage Results" MODIFIED="1707323727556" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
