@@ -68,6 +68,7 @@ def tree_scan(graph_edges, parent: SubjectInfo, cor_limit, depth: int, tree_dept
     # partition the args into chunks for each process
     chunk_size = len(args) // num_processes
     arg_chunks = [args[i:i + chunk_size] for i in range(0, len(args), chunk_size)]
+    arg_chunks[num_processes - 1].extend(args[chunk_size * num_processes:])  # last process gets remaining links
 
     child_nodes = executor.map(find_child, arg_chunks)
     child_nodes = list(itertools.chain.from_iterable(child_nodes))  # remove separation of each process' list
